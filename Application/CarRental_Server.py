@@ -1,3 +1,7 @@
+#
+#UPDATE CODE BETWEEN <>
+#
+
 #Import server packages and pandas
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
@@ -11,7 +15,7 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
 #
 #ADD IP ADDRESS AND PORT NUMBER TO COMMUNICATE WITH CLIENT
 #
-server = SimpleXMLRPCServer(("INSERT_CLIENT_IP_ADDRESS", INSERT_PORT_NUMBER), allow_none=True)
+server = SimpleXMLRPCServer(("<INSERT_SERVER_IP_ADDRESS>", <INSERT_PORT_NUMBER>), allow_none=True)
 server.register_introspection_functions()
 
 #Create initial list of Airline availability
