@@ -8,5 +8,5 @@ This application has an added MongoDB database layer. In order to run the code, 
  db.<name_of_collection>.insert({AirlineID:"<#>",AirlineName:"<name>",FromCity:"<city>",ToCity:"<city>",BookedYesOrNo:"N"})**
   
  #
- **Note that you will have to updated the IP address and port numbers appropriately where noted in the code**
+ **Note: You will have to updated the IP address and port numbers appropriately where noted in the code**
  #
