@@ -1,6 +1,6 @@
 #
 #
-#UPDATE CODE IN BETWEEN <>
+#UPDATE CODE BETWEEN <>
 #
 #
 
