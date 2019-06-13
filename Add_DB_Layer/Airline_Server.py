@@ -1,3 +1,9 @@
+#
+#
+#UPDATE CODE IN BETWEEN <>
+#
+#
+
 #Import server packages and pandas
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
@@ -11,11 +17,12 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
 # Create airline server
-server = SimpleXMLRPCServer(("172.31.40.61", 8801), allow_none=True)
+
+server = SimpleXMLRPCServer(("<INSERT_SERVER_IP_ADDRESS>", <INSERT_PORT_NUMBER>), allow_none=True)
 server.register_introspection_functions()
 
-#Create initial list of Airline availability
-# number, Airline, From, To, bookedYN
+#
+#SET-UP FOLLOWING LIST IN A MONGO DATABASE COLLECTION. SEE README FILE FOR DETAILS.
 #
 """
 Airlines = pd.DataFrame([
@@ -25,13 +32,8 @@ Airlines = pd.DataFrame([
     [4,'UA','Chicago','Newark', 'N'],
     [5,'Delta','Chicago','Salt Lake City', 'N']],
     columns = ['AirlineID','AirlineName','FromCity','ToCity','BookedYesOrNo'])
-
-Airlines.set_index('AirlineID', inplace = True)
-
-
-Reservations = pd.DataFrame([ ['','','']], columns = ['ResID','AirlineID','Name'])
-Reservations.set_index('ResID', inplace = True)
 """
+#Keeps track of reservation numbers. Could be moved to DB.
 resCount = 0
 
 #Create Airline functions
@@ -42,11 +44,11 @@ class AirlineFunctions:
         print("In the GetList function")
         try:
 
-            client = MongoClient('172.31.40.70',27017)
+            client = MongoClient("<SERVER_IP_ADDRESS>", <INSERT_PORT_NUMBER>)
 
 
             #retrieve all records
-            cursor = client.test.airlines.find({}, {'_id' : False})
+            cursor = client.<NAME_OF_DB>.<COLLECTION_OF_FLIGHTS>.find({}, {'_id' : False})
 
             #convert to DataFrame
             airlines = pd.DataFrame(list(cursor))
@@ -63,11 +65,12 @@ class AirlineFunctions:
     def GetReservationList(self):
         try:
 
-            client = MongoClient('172.31.40.70',27017)
+
+            client = MongoClient("<SERVER_IP_ADDRESS>", <INSERT_PORT_NUMBER>)
 
 
             #retrieve all records
-            cursor = client.test.airline_res.find({}, {'_id' : False})
+            cursor = client.<NAME_OF_DB>.<COLLECTION_OF_RESERVATIONS>.find({}, {'_id' : False})
 
             #convert to DataFrame
             airline_res = pd.DataFrame(list(cursor))
@@ -88,13 +91,14 @@ class AirlineFunctions:
             print("In the AddReservation function")
             resCount += 1
 
-            client = MongoClient('172.31.40.70',27017)
+
+            client = MongoClient("<SERVER_IP_ADDRESS>", <INSERT_PORT_NUMBER>)
 
             #get the database
-            db = client.test
+            db = client.<NAME_OF_DB>
 
             #get the collection
-            collection = db.airlines
+            collection = db.<COLLECTION_OF_FLIGHTS>
 
             #set airline flag to Y
             cursor = collection.update({'AirlineID':str(ID)}, {'$set' : {"BookedYesOrNo":"Y"}})                   
@@ -102,7 +106,7 @@ class AirlineFunctions:
             #create new reservation in res table
             newres = {'ResID': resCount,'AirlineID': ID,'Name':Name}
             
-            db.airline_res.insert(newres)
+            db.<COLLECTION_OF_RESERVATIONS>.insert(newres)
             
             return resCount
         
@@ -118,22 +122,23 @@ class AirlineFunctions:
         #try:
         print("In the RemoveReservation function")
         
-        client = MongoClient('172.31.40.70',27017)
+
+        client = MongoClient("<SERVER_IP_ADDRESS>", <INSERT_PORT_NUMBER>)
 
         #get the database
-        db = client.test
+        db = client.<NAME_OF_DB>
         
         
         #get AirlineID for the Res
-        res = db.airline_res.find({'ResID':ResID}, {'_id' : False})
+        res = db.<COLLECTION_OF_RESERVATIONS>.find({'ResID':ResID}, {'_id' : False})
         AirID = list(res)[0]['AirlineID']
                      
         #set airline flag to N
-        cursor = db.airlines.update({'AirlineID':str(AirID)}, {'$set' : {"BookedYesOrNo":"N"}})                   
+        cursor = db.<COLLECTION_OF_FLIGHTS>.update({'AirlineID':str(AirID)}, {'$set' : {"BookedYesOrNo":"N"}})                   
         print('Updated Airlines DB')
 
         #Delete reservation in res table[]
-        db.airline_res.remove({'ResID': ResID})        
+        db.<COLLECTION_OF_RESERVATIONS>.remove({'ResID': ResID})        
         print('Update Airline_Res DB')
        
         return "Airline reservation #{} has been deleted".format(ResID)
