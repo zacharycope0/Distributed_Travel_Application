@@ -1,12 +1,11 @@
+#
+#UPDATE CODE BETWEEN <>
+#
 #Import packages
 import xmlrpc.client
 import sys
 
-#
-#
 #  TESTING AIRLINE SERVER
-#
-#
 
 name = input("Enter your name to begin the reservation process:")
 
@@ -15,7 +14,7 @@ name = input("Enter your name to begin the reservation process:")
 #ADD IP ADDRESS AND PORT NUMBER TO COMMUNICATE WITH SERVER
 #
 try:
-    airlineServer = xmlrpc.client.ServerProxy('http://INSERT_AIRLINE_SERVER_IP_ADDRESS:INSERT_PORT_NUMBER')
+    airlineServer = xmlrpc.client.ServerProxy('http://<INSERT_AIRLINE_SERVER_IP_ADDRESS>:<INSERT_PORT_NUMBER>')
     # Call function to get list of airline tickets
     print("Calling GetList of airline Tickets")
     print(airlineServer.GetList() + '\n')
@@ -32,17 +31,11 @@ except:
     print("An error has occured. The reservation could not be processed.")
     sys.exit()
 
-#
-#
-#  TESTING CAR RENTAL SERVER
-#
-#
 
-#
-#ADD IP ADDRESS AND PORT NUMBER TO COMMUNICATE WITH SERVER
-#
+#  TESTING CAR RENTAL SERVER
+
 try:
-    CarRentalServer = xmlrpc.client.ServerProxy('http://INSERT_RENTAL_CAR_SERVER_IP_ADDRESS:INSERT_PORT_NUMBER')
+    CarRentalServer = xmlrpc.client.ServerProxy('http://<INSERT_RENTAL_CAR_SERVER_IP_ADDRESS>:<INSERT_PORT_NUMBER>')
     # Call function to get list of Rental Cars
     print("Calling GetList of Rental Cars")
     print(CarRentalServer.GetList() + '\n')
@@ -61,17 +54,12 @@ except:
     print(airlineServer.RemoveReservation(air_res))
     print("Your trip has been canceled")
     sys.exit()
-#
-#
-#  TESTING HOTEL SERVER
-#
-#
 
-#
-#ADD IP ADDRESS AND PORT NUMBER TO COMMUNICATE WITH SERVER
-#
+#  TESTING HOTEL SERVER
+
+
 try:
-    HotelServer = xmlrpc.client.ServerProxy('http://INSERT_HOTEL_SERVER_IP_ADDRESS:INSERT_PORT_NUMBER')
+    HotelServer = xmlrpc.client.ServerProxy('<http://INSERT_HOTEL_SERVER_IP_ADDRESS>:<INSERT_PORT_NUMBER>')
 
     # Call function to get list of Rental Cars
     print("Calling GetList of Hotels")
